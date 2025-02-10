@@ -13,14 +13,11 @@ dotenv.config({});
 const app = express();
 
 // middleware
-app.use(express.json());
-app.use(express.urlencoded({extended:true}));
-app.use(cookieParser());
 const corsOptions = {
-    origin:'https://jobhub12.netlify.app',
-    credentials:true
-}
-
+    origin: "https://jobhub12.netlify.app",
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"], // ✅ Allow all HTTP methods
+    allowedHeaders: ["Content-Type", "Authorization"], // ✅ Explicitly allow these headers
+};
 app.use(cors(corsOptions));
 
 const PORT = process.env.PORT || 3000;
