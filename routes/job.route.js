@@ -4,10 +4,14 @@ import { getAdminJobs, getAllJobs, getJobById, postJob } from "../controllers/jo
 
 const router = express.Router();
 
+// ✅ Public route (anyone can view job listings)
+router.route("/get").get(getAllJobs);
+
+// ✅ Public route (anyone can view job details)
+router.route("/get/:id").get(getJobById);
+
+// ✅ Protected routes (only authenticated users can post and see admin jobs)
 router.route("/post").post(isAuthenticated, postJob);
-router.route("/get").get(isAuthenticated, getAllJobs);
 router.route("/getadminjobs").get(isAuthenticated, getAdminJobs);
-router.route("/get/:id").get(isAuthenticated, getJobById);
 
 export default router;
-
