@@ -17,7 +17,7 @@ app.use(express.json());
 app.use(express.urlencoded({extended:true}));
 app.use(cookieParser());
 const corsOptions = {
-    origin:'https://jobhub12.netlify.app/',
+    origin:'https://jobhub12.netlify.app',
     credentials:true
 }
 
