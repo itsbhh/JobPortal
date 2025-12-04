@@ -13,7 +13,7 @@ const useGetAllJobs = () => {
             try {
                 const res = await axios.get(
                     `${JOB_API_END_POINT}/get?keyword=${searchedQuery}`,
-                    { withCredentials: true } // ✅ Ensures cookies/session handling
+                    { withCredentials: true } //  Ensures cookies/session handling
                 );
                 
                 if (res.data.success) {
@@ -27,7 +27,7 @@ const useGetAllJobs = () => {
         };
 
         fetchAllJobs();
-    }, [searchedQuery]); // ✅ Dependency added
+    }, [searchedQuery]); //  Dependency added
 
     return null; // Hooks should not return JSX
 };

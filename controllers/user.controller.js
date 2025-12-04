@@ -15,6 +15,16 @@ const normalizeDataUri = (fileUri) => {
   return null;
 };
 
+/**
+ * Return cookie options. Pass maxAge (ms). For clearing pass maxAge:0.
+ */
+const getCookieOptions = (maxAge = 30 * 24 * 60 * 60 * 1000) => ({
+  httpOnly: true,
+  secure: process.env.NODE_ENV === "production",
+  sameSite: "none",
+  maxAge
+});
+
 export const register = async (req, res) => {
   try {
     const { fullname, email, phoneNumber, password, role } = req.body;
@@ -123,10 +133,10 @@ export const login = async (req, res) => {
       profile: user.profile,
     };
 
-    // httpOnly cookie
+    // Set httpOnly cookie usable by cross-origin front-end (Netlify)
     return res
       .status(200)
-      .cookie("token", token, { maxAge: 1 * 24 * 60 * 60 * 1000, httpOnly: true, sameSite: "strict" })
+      .cookie("token", token, getCookieOptions()) // default 30 days
       .json({ message: `Welcome back ${user.fullname}`, user: userResponse, success: true });
   } catch (error) {
     console.error("Login error:", error);
@@ -136,7 +146,11 @@ export const login = async (req, res) => {
 
 export const logout = async (req, res) => {
   try {
-    return res.status(200).cookie("token", "", { maxAge: 0 }).json({ message: "Logged out successfully.", success: true });
+    // Clear cookie using same options (maxAge:0)
+    return res
+      .status(200)
+      .cookie("token", "", getCookieOptions(0))
+      .json({ message: "Logged out successfully.", success: true });
   } catch (error) {
     console.error("Logout error:", error);
     return res.status(500).json({ message: "Internal Server Error", success: false });

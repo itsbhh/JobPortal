@@ -2,7 +2,7 @@ import jwt from "jsonwebtoken";
 
 const isAuthenticated = async (req, res, next) => {
     try {
-        // ✅ Check if cookies exist
+        //  Check if cookies exist
         if (!req.cookies || !req.cookies.token) {
             return res.status(401).json({
                 message: "User not authenticated",
@@ -10,11 +10,11 @@ const isAuthenticated = async (req, res, next) => {
             });
         }
 
-        // ✅ Get token from cookies
+        //  Get token from cookies
         const token = req.cookies.token;
 
         try {
-            // ✅ Verify JWT Token
+            //  Verify JWT Token
             const decode = jwt.verify(token, process.env.SECRET_KEY);
             req.id = decode.userId;
             next();
