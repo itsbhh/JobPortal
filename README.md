@@ -3,7 +3,7 @@
 
 JobHub is a **full-stack Job Portal application** built using the **MERN Stack**, designed to simplify the hiring process for recruiters and make job searching seamless for applicants.
 
-The platform provides **two dedicated panels** — one for **recruiters** to manage companies, jobs, and applicants, and another for **job seekers** to explore opportunities, apply for jobs, and track application status.
+The platform provides **two dedicated panels** - one for **recruiters** to manage companies, jobs, and applicants, and another for **job seekers** to explore opportunities, apply for jobs, and track application status.
 
 JobHub is fully **responsive**, ensuring a smooth experience across desktop, tablet, and mobile devices.
 
