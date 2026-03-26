@@ -1,6 +1,5 @@
 import { Job } from "../models/job.model.js";
 
-// admin post krega job
 export const postJob = async (req, res) => {
     try {
         const { title, description, requirements, salary, location, jobType, experience, position, companyId } = req.body;
@@ -8,7 +7,7 @@ export const postJob = async (req, res) => {
 
         if (!title || !description || !requirements || !salary || !location || !jobType || !experience || !position || !companyId) {
             return res.status(400).json({
-                message: "Somethin is missing.",
+                message: "Something is missing.",
                 success: false
             })
         };
@@ -33,7 +32,7 @@ export const postJob = async (req, res) => {
         console.log(error);
     }
 }
-// student k liye
+
 export const getAllJobs = async (req, res) => {
     try {
         const keyword = req.query.keyword || "";
@@ -60,7 +59,7 @@ export const getAllJobs = async (req, res) => {
         console.log(error);
     }
 }
-// student
+
 export const getJobById = async (req, res) => {
     try {
         const jobId = req.params.id;
@@ -78,7 +77,7 @@ export const getJobById = async (req, res) => {
         console.log(error);
     }
 }
-// admin kitne job create kra hai abhi tk
+
 export const getAdminJobs = async (req, res) => {
     try {
         const adminId = req.id;
