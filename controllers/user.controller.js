@@ -4,10 +4,7 @@ import jwt from "jsonwebtoken";
 import getDataUri from "../utils/datauri.js";
 import cloudinary from "../utils/cloudinary.js";
 
-/**
- * Helper to normalize getDataUri return.
- * Accepts either a data-uri string or an object with `.content`.
- */
+
 const normalizeDataUri = (fileUri) => {
   if (!fileUri) return null;
   if (typeof fileUri === "string") return fileUri;
@@ -15,9 +12,7 @@ const normalizeDataUri = (fileUri) => {
   return null;
 };
 
-/**
- * Return cookie options. Pass maxAge (ms). For clearing pass maxAge:0.
- */
+
 const getCookieOptions = (maxAge = 30 * 24 * 60 * 60 * 1000) => ({
   httpOnly: true,
   secure: process.env.NODE_ENV === "production",
@@ -50,7 +45,6 @@ export const register = async (req, res) => {
     // If file present, validate & upload
     const file = req.file;
     if (file) {
-      // basic validations
       const maxSizeBytes = 5 * 1024 * 1024; // 5 MB
       const allowedImageTypes = ["image/jpeg", "image/jpg", "image/png", "image/webp"];
 
@@ -133,7 +127,6 @@ export const login = async (req, res) => {
       profile: user.profile,
     };
 
-    // Set httpOnly cookie usable by cross-origin front-end (Netlify)
     return res
       .status(200)
       .cookie("token", token, getCookieOptions()) // default 30 days
@@ -165,13 +158,12 @@ export const updateProfile = async (req, res) => {
     let cloudResponse = null;
 
     if (file) {
-      // Allow images for profilePhoto or PDFs for resume depending on your front-end naming
+      // Allow images for profilePhoto or PDFs for resume 
       const maxSizeBytes = 8 * 1024 * 1024; // 8 MB limit for resume/profile
       if (file.size && file.size > maxSizeBytes) {
         return res.status(400).json({ message: "Uploaded file is too large (max 8MB).", success: false });
       }
 
-      // You can allow additional mimetypes if you accept resumes (application/pdf)
       const allowedTypes = ["image/jpeg", "image/jpg", "image/png", "image/webp", "application/pdf"];
       if (file.mimetype && !allowedTypes.includes(file.mimetype)) {
         return res.status(400).json({ message: "Unsupported file type.", success: false });
@@ -199,14 +191,11 @@ export const updateProfile = async (req, res) => {
     if (bio) user.profile.bio = bio;
     if (skills) user.profile.skills = skills.split(",").map((s) => s.trim()).filter(Boolean);
 
-    // If a file was uploaded, decide where to store it:
-    // - If it's an image, assume profilePhoto
-    // - If it's a PDF, assume resume (adjust as per your frontend)
+    
     if (cloudResponse) {
       if (file.mimetype && file.mimetype.startsWith("image/")) {
         user.profile.profilePhoto = cloudResponse.secure_url;
       } else {
-        // treat as resume
         user.profile.resume = cloudResponse.secure_url;
         if (file.originalname) user.profile.resumeOriginalName = file.originalname;
       }
